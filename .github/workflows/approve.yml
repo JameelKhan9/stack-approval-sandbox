@@ -1,0 +1,18 @@
+name: approve
+on:
+  workflow_dispatch:
+    inputs:
+      pr:
+        description: pull request number to approve
+        required: true
+permissions:
+  pull-requests: write
+jobs:
+  approve:
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - run: gh pr review "$PR" --approve --body "sandbox approval by GITHUB_TOKEN" -R "$GITHUB_REPOSITORY"
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR: ${{ inputs.pr }}
