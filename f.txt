@@ -7,7 +7,7 @@ line 6
 bl-2 changed 7
 line 8
 line 9
-line 10
+side changed 10
 line 11
 s2-a review fix 12
 line 13
@@ -16,7 +16,7 @@ s7-a fix, never approved
 line 16
 line 17
 line 18
-line 19
+side changed 19
 s1-a changed 20
 line 21
 s2-a changed 22
