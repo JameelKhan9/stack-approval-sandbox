@@ -4,7 +4,7 @@ line 3
 bl-1 changed 4
 line 5
 line 6
-line 7
+bl-2 changed 7
 line 8
 line 9
 line 10
