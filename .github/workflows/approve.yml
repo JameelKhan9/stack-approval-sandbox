@@ -5,6 +5,9 @@ on:
       pr:
         description: pull request number to approve
         required: true
+      body:
+        description: review body (the carry-over trial uses it to fake a carry-over-only approval)
+        default: sandbox approval by GITHUB_TOKEN
 permissions:
   pull-requests: write
 jobs:
@@ -12,7 +15,8 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 2
     steps:
-      - run: gh pr review "$PR" --approve --body "sandbox approval by GITHUB_TOKEN" -R "$GITHUB_REPOSITORY"
+      - run: gh pr review "$PR" --approve --body "$BODY" -R "$GITHUB_REPOSITORY"
         env:
           GH_TOKEN: ${{ github.token }}
           PR: ${{ inputs.pr }}
+          BODY: ${{ inputs.body }}

@@ -1,0 +1,29 @@
+name: carry-over
+run-name: carry-over pr ${{ github.event.pull_request.number }} ${{ github.event.action }}
+# pull_request_target so the base branch's copy runs with a write token. Nothing from the PR is checked
+# out or executed: the script reads the API and git objects in a bare repo (fetch, diff, patch-id only).
+on:
+  pull_request_target:
+    types: [opened, reopened, synchronize, edited]
+permissions:
+  contents: read
+  pull-requests: write
+concurrency:
+  group: carry-over-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+jobs:
+  carry-over:
+    if: github.event.action != 'edited' || github.event.changes.base
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - name: Re-approve if the net change is identical to an approved commit
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          PR: ${{ github.event.pull_request.number }}
+        # Always main's script, whatever the PR's base: a stack layer's base is a PR branch.
+        run: |
+          curl -fsSL -H "Authorization: Bearer $GH_TOKEN" -H "Accept: application/vnd.github.raw" \
+            "https://api.github.com/repos/$REPO/contents/.github/scripts/carryover.sh?ref=main" -o "$RUNNER_TEMP/carryover.sh"
+          bash "$RUNNER_TEMP/carryover.sh"
