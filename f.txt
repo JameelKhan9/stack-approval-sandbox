@@ -1,7 +1,7 @@
 line 1
 side changed 2
 line 3
-line 4
+bl-1 changed 4
 line 5
 line 6
 line 7
